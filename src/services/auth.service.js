@@ -47,6 +47,7 @@ class AuthService {
                 user_id: user.id,
                 token: refreshToken,
                 user_agent: userAgent,
+                is_revoked: "0",
                 expires_at: expiresDate,
             },
         });
@@ -151,7 +152,7 @@ class AuthService {
             where: {
                 token: refreshToken,
                 expires_at: { gte: new Date() },
-                is_revoked: { not: "1" },
+                OR: [{ is_revoked: { not: "1" } }, { is_revoked: null }],
             },
             select: { id: true, user_id: true },
         });
