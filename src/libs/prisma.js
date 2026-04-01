@@ -1,6 +1,8 @@
 const { PrismaMariaDb } = require("@prisma/adapter-mariadb");
 const { PrismaClient } = require("@root/generated/prisma");
 const dbConfig = require("@/configs/db.config");
+// CommonJS
+const fs = require("fs");
 
 const adapter = new PrismaMariaDb({
   host: dbConfig.host,
@@ -9,6 +11,7 @@ const adapter = new PrismaMariaDb({
   database: dbConfig.database,
   port: dbConfig.port,
   ssl: {
+    // ← THÊM
     ca: [fs.readFileSync(dbConfig.sslCaPath, "utf8")],
     rejectUnauthorized: true,
   },
