@@ -1,6 +1,5 @@
 // CommonJS
-const fs = require("fs");
-
+const path = require("path");
 const dbConfig = {
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER,
