@@ -3,44 +3,48 @@ const { PrismaClient } = require("@root/generated/prisma");
 const dbConfig = require("@/configs/db.config");
 
 const adapter = new PrismaMariaDb({
-    host: dbConfig.host,
-    user: dbConfig.user,
-    password: dbConfig.password,
-    database: dbConfig.database,
-    port: dbConfig.port,
+  host: dbConfig.host,
+  user: dbConfig.user,
+  password: dbConfig.password,
+  database: dbConfig.database,
+  port: dbConfig.port,
+  ssl: {
+    ca: [fs.readFileSync(dbConfig.sslCaPath, "utf8")],
+    rejectUnauthorized: true,
+  },
 });
 
 async function updatePostsCount(userId) {
-    const postsCount = await prisma.post.count({
-        where: {
-            user_id: userId,
-        },
-    });
-    await prisma.user.update({
-        where: {
-            id: userId,
-        },
-        data: {
-            posts_count: postsCount,
-        },
-    });
+  const postsCount = await prisma.post.count({
+    where: {
+      user_id: userId,
+    },
+  });
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      posts_count: postsCount,
+    },
+  });
 }
 
 const prisma = new PrismaClient({ adapter }).$extends({
-    query: {
-        post: {
-            async create({ model, operation, args, query }) {
-                const result = await query(args);
-                await updatePostsCount(result.user_id);
-                return result;
-            },
-            async delete({ model, operation, args, query }) {
-                const result = await query(args);
-                await updatePostsCount(result.user_id);
-                return result;
-            },
-        },
+  query: {
+    post: {
+      async create({ model, operation, args, query }) {
+        const result = await query(args);
+        await updatePostsCount(result.user_id);
+        return result;
+      },
+      async delete({ model, operation, args, query }) {
+        const result = await query(args);
+        await updatePostsCount(result.user_id);
+        return result;
+      },
     },
+  },
 });
 
 module.exports = prisma;
