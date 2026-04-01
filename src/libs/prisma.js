@@ -3,6 +3,7 @@ const { PrismaClient } = require("@root/generated/prisma");
 const dbConfig = require("@/configs/db.config");
 // CommonJS
 const fs = require("fs");
+const path = require("node:path");
 
 const adapter = new PrismaMariaDb({
   host: dbConfig.host,
