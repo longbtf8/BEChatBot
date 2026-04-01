@@ -11,7 +11,7 @@ const dbConfig = {
   backupRemoteDir: process.env.DB_BACKUP_REMOTE_DIR,
   sslCaPath: path.resolve(__dirname, "../ssl/isrgrootx1.pem"),
   getDatabaseUrl() {
-    const { host, user, password, database, port } = this;
+    const { host, user, password, database, port, sslCaPath } = this;
     const encodedPassword = encodeURIComponent(password || "");
     // Đối với TiDB Cloud và Prisma, dùng query params sslaccept và sslca
     return `mysql://${user}:${encodedPassword}@${host}:${port}/${database}?sslaccept=strict&sslca=${sslCaPath}`;
