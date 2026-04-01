@@ -5,9 +5,9 @@ const pusher = new Pusher({
   key: process.env.SOKETI_APP_KEY,
   secret: process.env.SOKETI_APP_SECRET,
   cluster: "",
-  useTLS: false,
-  host: "127.0.0.1",
-  port: "6002",
+  useTLS: true,
+  host: "soketi-fy9d.onrender.com",
+  port: "443",
 });
 
 module.exports = pusher;
