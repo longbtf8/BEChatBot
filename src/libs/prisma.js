@@ -11,7 +11,7 @@ const adapter = new PrismaMariaDb({
   database: dbConfig.database,
   port: dbConfig.port,
   ssl: {
-    ca: [fs.readFileSync(__dirname + "../ssl/isrgrootx1.pem")],
+    ca: [fs.readFileSync(path.join(__dirname, "..", "ssl", "isrgrootx1.pem"))],
     rejectUnauthorized: true,
   },
 });
